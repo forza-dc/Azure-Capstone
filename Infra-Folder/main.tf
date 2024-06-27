@@ -10,7 +10,7 @@ provider "azurerm" {
 
 
 resource "azurerm_kubernetes_cluster" "aks" {
-  name                = "ForzaAKSCluster-java"
+  name                = "ForzaCapstoneAKSCluster-java"
   location            = "East US"
   resource_group_name = "ForzaCapstoneResourceGroup"
   dns_prefix          = "forzaaks"
