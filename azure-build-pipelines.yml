@@ -41,7 +41,7 @@ steps:
 
 - task: Docker@2
   inputs:
-    containerRegistry: 'ForzaDockerRegistryConnection'
+    containerRegistry: 'ForzaDockerRegistryConnection'  # Replace with your Docker Registry service connection name
     repository: 'forzacapstoneacrjavaapp.azurecr.io'
     command: 'buildAndPush'
     Dockerfile: '**/Dockerfile'
