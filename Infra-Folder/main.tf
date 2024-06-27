@@ -8,10 +8,6 @@ provider "azurerm" {
   skip_provider_registration = true
 }
 
-resource "azurerm_resource_group" "aks" {
-  name     = "ForzaCapstoneResourceGroup-java"
-  location = "East US"
-}
 
 resource "azurerm_kubernetes_cluster" "aks" {
   name                = "ForzaAKSCluster-java"
