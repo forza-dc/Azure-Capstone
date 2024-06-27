@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: java-webapp
-        image: forzacapstoneacrjavaapp.azurecr.io
+        image: forzacapstoneacrjavaapp.azurecr.io:latest
         ports:
         - containerPort: 8080
 ---
