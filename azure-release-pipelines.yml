@@ -55,7 +55,7 @@ stages:
               backendAzureRmResourceGroupName: 'ForzaCapstoneResourceGroup'
               backendAzureRmResourceGroupLocation: 'eastus'
               backendAzureRmStorageAccountName: 'devopstfjava'
-              backendAzureRmContainerName: 'ForzaCapstoneaksjavadevops'
+              backendAzureRmContainerName: 'forzacapstoneaksjavadevops'
               backendAzureRmKey: 'terraform.tfstate'
               allowTelemetryCollection: false
 
