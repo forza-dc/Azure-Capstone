@@ -79,7 +79,7 @@ stages:
               action: 'deploy'
               connectionType: 'azureResourceManager'
               azureSubscriptionConnection: 'ForzaAzureRMConnection'
-              azureResourceGroup: 'ForzaCapstoneResourceGroup'
+              azureResourceGroup: 'ForzaCapstoneResourceGroup-java'
               kubernetesCluster: 'ForzaCapstoneAKSCluster-java'
               useClusterAdmin: true
               manifests: '$(System.DefaultWorkingDirectory)/Infra-Folder/deployment.yaml'
