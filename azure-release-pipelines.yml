@@ -1,3 +1,5 @@
+name: Deploy TO Kubernetes
+
 trigger: none
 
 pool:
