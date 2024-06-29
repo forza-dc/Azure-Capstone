@@ -21,7 +21,7 @@ stages:
               backendServiceArm: 'ForzaAzureRMConnection'
               backendAzureRmResourceGroupName: 'ForzaCapstoneResourceGroup'
               backendAzureRmResourceGroupLocation: 'eastus'
-              backendAzureRmStorageAccountName: 'devopstfjava'
+              backendAzureRmStorageAccountName: 'forzadevopstfjava'
               backendAzureRmContainerName: 'forzacapstoneaksjavadevops'
               backendAzureRmKey: 'terraform.tfstate'
               allowTelemetryCollection: false
