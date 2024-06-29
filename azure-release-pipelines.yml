@@ -8,12 +8,11 @@ stages:
     jobs:
       - job: DeployToDev
         steps:
-
           - task: TerraformInstaller@2
             inputs:
-              terraformVersion: 'latest'
-
+             terraformVersion: 'latest'
           - task: TerraformCLI@2
+
             inputs:
               command: 'init'
               workingDirectory: '$(System.DefaultWorkingDirectory)/Infra-Folder'
