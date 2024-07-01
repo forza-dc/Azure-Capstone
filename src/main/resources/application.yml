@@ -1,10 +1,15 @@
 server:
   port: 8080
 
-#TODO: figure out why I need this here and in bootstrap.yml
 spring:
   application:
     name: testLatticeApp
+  datasource:
+    url: jdbc:sqlserver://forzatechdb.database.windows.net:1433;database=forzatech
+    username: forzatech_db
+    password: N46g8aNQz5YaJD4
+  profiles:
+    active: dev
 
 ribbon:
   ServerListRefreshInterval: 1000
