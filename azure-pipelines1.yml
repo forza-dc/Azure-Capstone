@@ -5,7 +5,7 @@ resources:
 - repo: self
 
 variables:
-  # Container registry service connection established during pipeline creation
+  # Container registry service connection  during pipeline creation
   dockerRegistryServiceConnection: '26f4e605-c569-4e2c-9237-1643070fba7a'
   imageRepository: 'forzacapstone'
   containerRegistry: 'ForzaCapstonDockerRegistryConnection.azurecr.io'
