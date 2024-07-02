@@ -3,7 +3,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
 trigger:
-- master
+- dev
 
 resources:
 - repo: self
@@ -14,7 +14,7 @@ variables:
   imageRepository: 'azurecapstone'
   containerRegistry: 'forzacapstondockerregistryconnection.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
-  tag: '$(Build.BuildId)'
+  tag: 'dev-$(Build.BuildId)'
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
