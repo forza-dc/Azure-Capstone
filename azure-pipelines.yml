@@ -1,3 +1,4 @@
+
 # Docker
 # Build and push an image to Azure Container Registry
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
@@ -56,6 +57,7 @@ stages:
         publishJUnitResults: true
         testResultsFiles: '**/surefire-reports/TEST-*.xml'
         goals: 'clean package -Dmaven.test.skip=true'
+        
     - task: Docker@2
       displayName: Build and push an image to container registry
       inputs:
@@ -65,3 +67,55 @@ stages:
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           $(tag)
+
+- stage: Dev
+  displayName: Deploy to Development Environment
+  jobs:
+  - job: DeployToDev
+    displayName: Deploy to Dev
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+       - task: TerraformInstaller@2
+            inputs:
+              terraformVersion: 'latest'
+
+          - task: TerraformCLI@2
+            inputs:
+              command: 'init'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/Infra-Folder'
+              backendType: 'azurerm'
+              backendServiceArm: 'ForzaAzureRMConnection'
+              backendAzureRmResourceGroupName: 'ForzaCapstoneResourceGroup'
+              backendAzureRmResourceGroupLocation: 'eastus'
+              backendAzureRmStorageAccountName: 'devopstfjava'
+              backendAzureRmContainerName: 'forzacapstoneaksjavadevops'
+              backendAzureRmKey: 'terraform.tfstate'
+              allowTelemetryCollection: false
+
+          - task: TerraformCLI@2
+            inputs:
+              command: 'plan'
+              environmentServiceName: 'ForzaAzureRMConnection'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/Infra-Folder'
+              runAzLogin: true
+              allowTelemetryCollection: false
+              
+          - task: TerraformCLI@2
+            inputs:
+              command: 'apply'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/Infra-Folder'
+              environmentServiceName: 'ForzaAzureRMConnection'
+              allowTelemetryCollection: false
+
+          - task: KubernetesManifest@1
+            inputs:
+              action: 'deploy'
+              connectionType: 'azureResourceManager'
+              azureSubscriptionConnection: 'ForzaAzureRMConnection'
+              azureResourceGroup: 'ForzaCapstoneResourceGroup'
+              kubernetesCluster: 'ForzaCapstoneAKSCluster-java'
+              useClusterAdmin: true
+              manifests: '$(System.DefaultWorkingDirectory)/Infra-Folder/deployment.yaml'
+
+   
