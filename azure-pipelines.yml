@@ -5,14 +5,12 @@ resources:
 - repo: self
 
 variables:
-  # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: '140c7113-db46-417a-8ed7-c019ced14ba0'
   imageRepository: 'azurecapstone'
   containerRegistry: 'forzacapstondockerregistryconnection.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
   tag: 'dev-$(Build.BuildId)'
 
-  # Agent VM image name
   vmImageName: 'ubuntu-latest'
 
 stages:
@@ -63,48 +61,52 @@ stages:
         tags: |
           $(tag)
 
- - stage: Dev
-    jobs:
-      - job: DeployToDev
-        steps:
-          - task: TerraformInstaller@2
-            inputs:
-             terraformVersion: 'latest'
-          - task: TerraformCLI@2
+- stage: Dev
+  displayName: Dev
+  jobs:
+  - job: DeployToDev
+    displayName: Deploy to Dev
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: TerraformInstaller@2
+      inputs:
+        terraformVersion: 'latest'
 
-            inputs:
-              command: 'init'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/Infra-Folder'
-              backendType: 'azurerm'
-              backendServiceArm: 'ForzaAzureRMConnection'
-              backendAzureRmResourceGroupName: 'ForzaCapstoneResourceGroup'
-              backendAzureRmResourceGroupLocation: 'eastus'
-              backendAzureRmStorageAccountName: 'forzadevopstfjava'
-              backendAzureRmContainerName: 'forzacapstoneaksjavadevops'
-              backendAzureRmKey: 'terraform.tfstate'
-              allowTelemetryCollection: false
+    - task: TerraformCLI@2
+      inputs:
+        command: 'init'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/Infra-Folder'
+        backendType: 'azurerm'
+        backendServiceArm: 'ForzaAzureRMConnection'
+        backendAzureRmResourceGroupName: 'ForzaCapstoneResourceGroup'
+        backendAzureRmResourceGroupLocation: 'eastus'
+        backendAzureRmStorageAccountName: 'forzadevopstfjava'
+        backendAzureRmContainerName: 'forzacapstoneaksjavadevops'
+        backendAzureRmKey: 'terraform.tfstate'
+        allowTelemetryCollection: false
 
-          - task: TerraformCLI@2
-            inputs:
-              command: 'plan'
-              environmentServiceName: 'ForzaAzureRMConnection'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/Infra-Folder'
-              runAzLogin: true
-              allowTelemetryCollection: false
+    - task: TerraformCLI@2
+      inputs:
+        command: 'plan'
+        environmentServiceName: 'ForzaAzureRMConnection'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/Infra-Folder'
+        runAzLogin: true
+        allowTelemetryCollection: false
               
-          - task: TerraformCLI@2
-            inputs:
-              command: 'apply'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/Infra-Folder'
-              environmentServiceName: 'ForzaAzureRMConnection'
-              allowTelemetryCollection: false
+    - task: TerraformCLI@2
+      inputs:
+        command: 'apply'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/Infra-Folder'
+        environmentServiceName: 'ForzaAzureRMConnection'
+        allowTelemetryCollection: false
 
-          - task: KubernetesManifest@1
-            inputs:
-              action: 'deploy'
-              connectionType: 'azureResourceManager'
-              azureSubscriptionConnection: 'ForzaAzureRMConnection'
-              azureResourceGroup: 'ForzaCapstoneResourceGroup'
-              kubernetesCluster: 'ForzaCapstoneAKSCluster-java'
-              useClusterAdmin: true
-              manifests: '$(System.DefaultWorkingDirectory)/Infra-Folder/deployment.yaml'
+    - task: KubernetesManifest@1
+      inputs:
+        action: 'deploy'
+        connectionType: 'azureResourceManager'
+        azureSubscriptionConnection: 'ForzaAzureRMConnection'
+        azureResourceGroup: 'ForzaCapstoneResourceGroup'
+        kubernetesCluster: 'ForzaCapstoneAKSCluster-java'
+        useClusterAdmin: true
+        manifests: '$(System.DefaultWorkingDirectory)/Infra-Folder/deployment.yaml'
