@@ -62,29 +62,14 @@ stages:
         tags: |
           $(tag)
 
-- stage: Approval
-  displayName: Manual Approval
-  jobs:
-  - job: WaitForApproval
-    displayName: Wait for manual approval
-    pool:
-      vmImage: $(vmImageName)
-    steps:
-    - task: ManualValidation@0
-      inputs:
-        instructions: 'Please approve the deployment to Dev environment.'
-        onTimeout: 'reject'
-        timeout: '0'
-      timeoutInMinutes: 60  # Set the timeout as per your requirement
-
 - stage: Dev
   displayName: Dev
-  dependsOn: Approval
   jobs:
   - job: DeployToDev
     displayName: Deploy to Dev
     pool:
       vmImage: $(vmImageName)
+    environment: 'Dev'  # Reference the environment with approval checks
     steps:
     - task: TerraformInstaller@2
       inputs:
