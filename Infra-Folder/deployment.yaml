@@ -1,33 +1,40 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dev-environment
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: java-webapp
+  name: java-webapp-dev
+  namespace: dev-environment
   labels:
-    app: java-webapp
+    app: java-webapp-dev
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: java-webapp
+      app: java-webapp-dev
   template:
     metadata:
       labels:
-        app: java-webapp
+        app: java-webapp-dev
     spec:
       containers:
       - name: java-webapp
-        image: forzacapstondockerregistryconnection.azurecr.io/azurecapstone:21
+        image: forzadockerregistryconnection.azurecr.io/forzacapstone:357
         ports:
         - containerPort: 8080
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: java-webapp-service
+  name: java-webapp-service-dev
+  namespace: dev-environment
 spec:
   type: LoadBalancer
   selector:
-    app: java-webapp
+    app: java-webapp-dev
   ports:
   - protocol: TCP
     port: 80
