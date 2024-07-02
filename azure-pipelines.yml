@@ -63,17 +63,15 @@ stages:
         tags: |
           $(tag)
 
-- stage: Dev
-  displayName: Deploy to Development Environment
-  jobs:
+ - stage: Dev
+    jobs:
       - job: DeployToDev
         steps:
-
           - task: TerraformInstaller@2
             inputs:
-              terraformVersion: 'latest'
-
+             terraformVersion: 'latest'
           - task: TerraformCLI@2
+
             inputs:
               command: 'init'
               workingDirectory: '$(System.DefaultWorkingDirectory)/Infra-Folder'
@@ -81,7 +79,7 @@ stages:
               backendServiceArm: 'ForzaAzureRMConnection'
               backendAzureRmResourceGroupName: 'ForzaCapstoneResourceGroup'
               backendAzureRmResourceGroupLocation: 'eastus'
-              backendAzureRmStorageAccountName: 'devopstfjava'
+              backendAzureRmStorageAccountName: 'forzadevopstfjava'
               backendAzureRmContainerName: 'forzacapstoneaksjavadevops'
               backendAzureRmKey: 'terraform.tfstate'
               allowTelemetryCollection: false
