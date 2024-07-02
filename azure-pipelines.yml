@@ -69,7 +69,8 @@ stages:
     displayName: Deploy to Dev
     pool:
       vmImage: $(vmImageName)
-    environment: 'Dev'  # Reference the environment with approval checks
+    environment: 
+      name: Dev  # Reference the environment with approval checks
     steps:
     - task: TerraformInstaller@2
       inputs:
