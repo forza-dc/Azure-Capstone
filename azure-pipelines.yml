@@ -70,6 +70,7 @@ stages:
       timeoutInMinutes: 1440 # task times out in 1 day
       inputs:
         notifyUsers: |
+          stsamdc@hotmail.com
         instructions: 'Please validate the build configuration and resume'
         onTimeout: 'resume'
 - stage: Dev
