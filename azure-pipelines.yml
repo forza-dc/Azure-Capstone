@@ -73,11 +73,11 @@ stages:
           
         instructions: 'Please validate the build configuration and resume'
         onTimeout: 'resume'
-- stage: Dev
-  displayName: Dev
+- stage: Prod
+  displayName: Prod
   jobs:
-  - job: DeployToDev
-    displayName: Deploy to Dev
+  - job: DeployToProd
+    displayName: Deploy to Prod
     pool:
       vmImage: $(vmImageName)
     steps:
